@@ -4,7 +4,7 @@ const API_BASE_URL = "http://localhost:5678/api";
 
 /**
  * Récupère tous les projets depuis l'API
- * @returns {Promise<Array>} Un tableau contenant les projets
+ * @returns {Promise<Array>} Tableau des projets
  */
 async function getWorksFromApi() {
     try {
@@ -24,7 +24,7 @@ async function getWorksFromApi() {
 
 /**
  * Récupère toutes les catégories depuis l'API
- * @returns {Promise<Array>} Un tableau contenant les catégories
+ * @returns {Promise<Array>} Tableau des catégories
  */
 async function getCategoriesFromApi() {
     try {

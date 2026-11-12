@@ -28,7 +28,6 @@ function displayWorks(works) {
  */
 function displayFilters(categories) {
     const filters = document.querySelector(".filters");
-    filters.innerHTML = ""; // Sécurité pour vider le conteneur
 
     // 1. Création manuelle du bouton "Tous" par défaut
     const allButton = document.createElement("button");
@@ -70,16 +69,60 @@ function setActiveButton(clickedButton) {
 }
 
 /**
+ * Vérifie si l'utilisateur est connecté et adapte l'interface (Mode édition)
+ */
+function checkUserLogin() {
+    const token = localStorage.getItem("token");
+    
+    if (token) {
+        // 1. Afficher le bandeau noir "Mode édition" en haut de la page
+        const editBanner = document.createElement("div");
+        editBanner.classList.add("edit-banner");
+        editBanner.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Mode édition';
+        document.body.prepend(editBanner);
+
+        // 2. Transformer le lien "login" en "logout"
+        const loginLink = document.querySelector("nav ul li a[href='login.html']");
+        if (loginLink) {
+            loginLink.textContent = "logout";
+            loginLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                localStorage.removeItem("token");
+                window.location.reload();
+            });
+        }
+
+        // 3. Masquer les filtres de catégories
+        const filtersContainer = document.querySelector(".filters");
+        if (filtersContainer) {
+            filtersContainer.style.display = "none";
+        }
+
+        // 4. Afficher le bouton de modification à côté de "Mes projets"
+        const portfolioTitle = document.querySelector("#portfolio h2");
+        if (portfolioTitle) {
+            const editButton = document.createElement("button");
+            editButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> modifier';
+            editButton.classList.add("btn-edit");
+            portfolioTitle.appendChild(editButton);
+        }
+    }
+}
+
+/**
  * Fonction d'initialisation de l'application au chargement de la page
  */
 async function init() {
     // 1. Récupération et affichage des projets
     window.allWorks = await getWorksFromApi();
     displayWorks(window.allWorks);
-
+    
     // 2. Récupération et affichage des catégories / filtres
     const categories = await getCategoriesFromApi();
     displayFilters(categories);
+
+    // 3. Application du mode connecté si un token est présent
+    checkUserLogin();
 }
 
 // Lancement de l'application
