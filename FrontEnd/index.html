@@ -71,6 +71,45 @@
 			</ul>
 		</nav>
 	</footer>
+	<div id="modal" class="modal hidden">
+		<div class="modal-content">
+			<button id="modal-close" class="modal-close" aria-label="Fermer">&times;</button>
+			<button id="modal-back" class="modal-back hidden" aria-label="Retour">
+				<i class="fa-solid fa-arrow-left"></i>
+			</button>
+
+			<!-- Zone 1 : galerie -->
+			<div id="modal-gallery-view">
+				<h3>Galerie photo</h3>
+				<div class="modal-gallery"></div>
+				<hr class="modal-separator">
+				<button id="modal-add-btn" class="btn-green">Ajouter une photo</button>
+			</div>
+
+			<!-- Zone 2 : formulaire d'ajout -->
+			<div id="modal-form-view" class="hidden">
+				<h3>Ajout photo</h3>
+				<form id="add-work-form">
+					<div class="upload-zone">
+						<i class="fa-regular fa-image upload-icon"></i>
+						<label for="work-image" class="upload-btn">+ Ajouter photo</label>
+						<input type="file" id="work-image" accept="image/png, image/jpeg">
+						<p class="upload-info">jpg, png : 4mo max</p>
+						<img id="work-preview" class="hidden" alt="Aperçu de la photo">
+					</div>
+
+					<label for="work-title">Titre</label>
+					<input type="text" id="work-title">
+
+					<label for="work-category">Catégorie</label>
+					<select id="work-category"></select>
+					<p id="form-message" class="form-message"></p>
+					<hr class="modal-separator">
+					<input type="submit" value="Valider" class="btn-green">
+				</form>
+			</div>
+		</div>
+	</div>
 	<script src="./api.js"></script>
 	<script src="./script.js"></script>
 </body>
