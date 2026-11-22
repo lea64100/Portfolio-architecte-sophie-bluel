@@ -1,4 +1,4 @@
-window.allWorks = [];
+let allWorks = [];
 
 /**
  * Affiche les projets dans la galerie HTML
@@ -30,7 +30,7 @@ const displayFilters = (categories) => {
     allButton.textContent = "Tous";
     allButton.classList.add("filter-button", "active");
     allButton.addEventListener("click", () => {
-        displayWorks(window.allWorks);
+        displayWorks(allWorks);
         setActiveButton(allButton);
     });
     filters.appendChild(allButton);
@@ -43,7 +43,7 @@ const displayFilters = (categories) => {
 
         // Au clic sur un filtre, on filtre les projets correspondants
         button.addEventListener("click", () => {
-            const filteredWorks = window.allWorks.filter(work => work.categoryId === category.id);
+            const filteredWorks = allWorks.filter(work => work.categoryId === category.id);
             displayWorks(filteredWorks);
             setActiveButton(button);
         });
@@ -141,7 +141,7 @@ const showFormView = () => {
 };
 
 const openModal = () => {
-    displayModalWorks(window.allWorks);
+    displayModalWorks(allWorks);
     showGalleryView();
     modal.classList.remove("hidden");
 };
@@ -166,9 +166,9 @@ const setupModal = () => {
 
         if (success) {
             // Retire le projet de la mémoire, puis réaffiche les deux galeries
-            window.allWorks = window.allWorks.filter(work => work.id !== id);
-            displayWorks(window.allWorks);
-            displayModalWorks(window.allWorks);
+            allWorks = allWorks.filter(work => work.id !== id);
+            displayWorks(allWorks);
+            displayModalWorks(allWorks);
         } else {
             alert("La suppression a échoué.");
         }
@@ -186,8 +186,8 @@ const setupModal = () => {
  * Fonction d'initialisation de l'application au chargement de la page
  */
 const init = async () => {
-    window.allWorks = await getWorksFromApi();
-    displayWorks(window.allWorks);
+    allWorks = await getWorksFromApi();
+    displayWorks(allWorks);
 
     const categories = await getCategoriesFromApi();
     displayFilters(categories);
@@ -281,13 +281,13 @@ const setupAddForm = () => {
         if (newWork) {
             newWork.categoryId = Number(newWork.categoryId);
 
-            window.allWorks.push(newWork);
+            allWorks.push(newWork);
 
-            displayWorks(window.allWorks);
-            displayModalWorks(window.allWorks);
+            displayWorks(allWorks);
+            displayModalWorks(allWorks);
 
             resetForm();
-            closeModal();
+            showGalleryView();
         } else {
             showMessage("L'envoi a échoué, réessaie.", false);
         }
