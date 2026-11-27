@@ -19,7 +19,6 @@ form.addEventListener("submit", async (event) => {
             body: JSON.stringify(userCredentials)
         });
 
-        // Connexion réussie = 200-299
         if (response.ok) {
             const data = await response.json();
         

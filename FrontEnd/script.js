@@ -1,7 +1,6 @@
 let allWorks = [];
 
 /**
- * Affiche les projets dans la galerie HTML
  * @param {Array} works
  */
 const displayWorks = (works) => {
@@ -9,7 +8,6 @@ const displayWorks = (works) => {
 
     gallery.innerHTML = "";
 
-    //.map() pour transformer chaque projet en balise HTML, puis .join("") pour tout injecter d'un coup
     gallery.innerHTML = works.map(work => `
         <figure>
             <img src="${work.imageUrl}" alt="${work.title}">
@@ -19,13 +17,11 @@ const displayWorks = (works) => {
 };
 
 /**
- * Boutons de filtres dynamiques
- * @param {Array} categories - Le tableau des catégories récupérées de l'API
+ * @param {Array} categories
  */
 const displayFilters = (categories) => {
     const filters = document.querySelector(".filters");
 
-    // 1. Bouton "Tous" par défaut
     const allButton = document.createElement("button");
     allButton.textContent = "Tous";
     allButton.classList.add("filter-button", "active");
@@ -35,13 +31,11 @@ const displayFilters = (categories) => {
     });
     filters.appendChild(allButton);
 
-    // 2. Boutons dynamique des catégories pour chaque catégorie de l'API
     categories.forEach(category => {
         const button = document.createElement("button");
         button.textContent = category.name;
         button.classList.add("filter-button");
 
-        // Au clic sur un filtre, on filtre les projets correspondants
         button.addEventListener("click", () => {
             const filteredWorks = allWorks.filter(work => work.categoryId === category.id);
             displayWorks(filteredWorks);
@@ -53,7 +47,6 @@ const displayFilters = (categories) => {
 };
 
 /**
- * Bouton actif (couleur de fond et texte)
  * @param {HTMLElement} clickedButton
  */
 const setActiveButton = (clickedButton) => {
@@ -64,20 +57,15 @@ const setActiveButton = (clickedButton) => {
     clickedButton.classList.add("active");
 };
 
-/**
- * Si l'utilisateur est connecté active le Mode édition
- */
 const checkUserLogin = () => {
     const token = localStorage.getItem("token");
 
     if (token) {
-        // 1. Bandeau noir
         const editBanner = document.createElement("div");
         editBanner.classList.add("edit-banner");
         editBanner.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Mode édition';
         document.body.prepend(editBanner);
 
-        // 2. "login" (co) en "logout" (déco)
         const loginlink = document.querySelector("ul li a[href='login.html']");
         if (loginlink) {
             loginlink.textContent = "logout";
@@ -88,13 +76,11 @@ const checkUserLogin = () => {
             });
         }
 
-        // 3. Enlever les filtres
         const filtersContainer = document.querySelector(".filters");
         if (filtersContainer) {
             filtersContainer.style.display = "none";
         }
 
-        // 4. Bouton de modif a côté de "Mes projets"
         const portfolioTitle = document.querySelector("#portfolio h2");
         if (portfolioTitle) {
             const editButton = document.createElement("button");
@@ -106,16 +92,11 @@ const checkUserLogin = () => {
     } 
 };
 
-/**
- * Utilisateur co + clique sur modifier pour afficher la modale
- */
-
 const modal = document.querySelector("#modal");
 const galleryView = document.querySelector("#modal-gallery-view");
 const formView = document.querySelector("#modal-form-view");
 const backButton = document.querySelector("#modal-back");
 
-/** Miniatures de la modale*/
 const displayModalWorks = (works) => {
     const modalGallery = document.querySelector(".modal-gallery");
     modalGallery.innerHTML = works.map(work => `
@@ -150,13 +131,12 @@ const closeModal = () => {
     modal.classList.add("hidden");
 };
 
-/** Clics de la modale (une fois) */
 const setupModal = () => {
     document.querySelector("#modal-close").addEventListener("click", closeModal);
     document.querySelector("#modal-add-btn").addEventListener("click", showFormView);
     backButton.addEventListener("click", showGalleryView);
 
-    // Clic corbeille : suppression d'un projet
+
     document.querySelector(".modal-gallery").addEventListener("click", async (event) => {
         const deleteButton = event.target.closest(".delete-btn");
         if (!deleteButton) return;
@@ -165,7 +145,6 @@ const setupModal = () => {
         const success = await deleteWorkFromApi(id);
 
         if (success) {
-            // Retire le projet de la mémoire, puis réaffiche les deux galeries
             allWorks = allWorks.filter(work => work.id !== id);
             displayWorks(allWorks);
             displayModalWorks(allWorks);
@@ -174,7 +153,6 @@ const setupModal = () => {
         }
     });
 
-    // Clic sur le fond sombre (pas fenêtre blanche)
     modal.addEventListener("click", (event) => {
         if (event.target === modal) {
             closeModal();
@@ -182,9 +160,6 @@ const setupModal = () => {
     });
 };
 
-/**
- * Fonction d'initialisation de l'application au chargement de la page
- */
 const init = async () => {
     allWorks = await getWorksFromApi();
     displayWorks(allWorks);
@@ -206,7 +181,6 @@ const fillCategorySelect = (categories) => {
     `).join("");
 };
 
-// Formulaire d'ajout (preview, vérification, envoi)
 const setupAddForm = () => {
     const form = document.querySelector("#add-work-form");
     const imageInput = document.querySelector("#work-image");
@@ -222,7 +196,6 @@ const setupAddForm = () => {
         message.classList.toggle("success", isSuccess);
     };
 
-    // Le bouton est gris tant que tout n'est pas rempli
     const updateSubmitStyle = () => {
         const isComplete = imageInput.files[0] && titleInput.value.trim() && categorySelect.value;
         submitButton.classList.toggle("inactive", !isComplete);
@@ -236,7 +209,6 @@ const setupAddForm = () => {
         updateSubmitStyle();
     };
 
-    // Preview au choix d'une image
     imageInput.addEventListener("change", () => {
         const file = imageInput.files[0];
         if (!file) return;
@@ -258,7 +230,6 @@ const setupAddForm = () => {
     categorySelect.addEventListener("change", updateSubmitStyle);
     updateSubmitStyle();
 
-    // Envoi du formulaire
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 

@@ -1,8 +1,5 @@
 const API_BASE_URL = "http://localhost:5678/api";
 
-/**
- * Récupère toutes les catégories depuis l'API
- */
 const getCategoriesFromApi = async () => {
     try {
         const response = await fetch(`${API_BASE_URL}/categories`);
@@ -19,9 +16,6 @@ const getCategoriesFromApi = async () => {
     }
 };
 
-/**
- * Récupère tous les projets depuis l'API 
- */
 const getWorksFromApi = async () => {
     try {
         const response = await fetch(`${API_BASE_URL}/works`);
@@ -38,7 +32,6 @@ const getWorksFromApi = async () => {
     }
 };
 
-// Supprime un projet avec l'API (il faut être connecté)
 const deleteWorkFromApi = async (id) => {
     const token = localStorage.getItem("token");
 
@@ -57,7 +50,6 @@ const deleteWorkFromApi = async (id) => {
     }
 };
 
-// Ajoute un nouveau projet à l'API (il faut être connecté)
 const addWorkToApi = async (formData) => {
     const token = localStorage.getItem("token");
 

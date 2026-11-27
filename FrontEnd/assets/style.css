@@ -603,11 +603,6 @@ footer nav ul {
   margin: 47px 0 32px 0;
 }
 
-.btn-green:disabled {
-  background-color: #a7a7a7;
-  cursor: default;
-}
-
 #modal-form-view .btn-green {
   align-self: center;
 }
@@ -644,10 +639,6 @@ body.login-page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
-
-body.login-page main {
-  flex: 1;
 }
 
 body.login-page header,
